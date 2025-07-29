@@ -1,0 +1,371 @@
+/* homepage.css – base styling file for homepage UI */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  color: #222;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.header-left .logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.header-center {
+  flex: 1;
+  max-width: 500px;
+  margin: 0 20px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 15px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.icon-button img {
+  width: 24px;
+  height: 24px;
+}
+
+.cart-button {
+  position: relative;
+}
+
+.cart-count {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background-color: black;
+  color: white;
+  font-size: 12px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* Top Navigation */
+
+.topnav {
+  background-color: #f9f9f9;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.topnav-list {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  font-size: 16px;
+}
+
+.topnav-list a {
+  padding: 6px 12px;
+  transition: background 0.2s ease;
+}
+
+.topnav-list a:hover {
+  background-color: #e5e5e5;
+  border-radius: 5px;
+}
+
+  
+/* Hero Slider */
+
+.hero-slider {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: all 0.5s ease;
+}
+
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.6);
+  border: none;
+  font-size: 24px;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.slider-arrow.left {
+  left: 20px;
+}
+
+.slider-arrow.right {
+  right: 20px;
+}
+/* Our Categories */
+
+.categories-section {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 24px;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.categories-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.category-card {
+  width: 140px;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.category-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  transition: transform 0.3s;
+}
+
+.category-image:hover {
+  transform: scale(1.05);
+}
+
+.category-label {
+  margin-top: 10px;
+  font-size: 16px;
+}
+/* Best Sellers */
+
+.bestseller-section {
+  padding: 40px 20px;
+  position: relative;
+}
+
+.bestseller-slider {
+  position: relative;
+  overflow: hidden;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.bestseller-track {
+  display: flex;
+  transition: transform 0.5s ease;
+  width: 100%;
+}
+
+.bestseller-card {
+  min-width: calc(100% / 3);
+  box-sizing: border-box;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.bestseller-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.bestseller-name {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.bestseller-section .slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.6);
+  border: none;
+  font-size: 24px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.bestseller-section .slider-arrow.left {
+  left: 0;
+}
+
+.bestseller-section .slider-arrow.right {
+  right: 0;
+}
+/* Promo Banner */
+
+.promo-banner {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  margin: 40px 0;
+}
+
+.promo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.promo-button {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  background-color: black;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+/* Reviews Slider */
+
+.reviews-slider {
+  padding: 40px 20px;
+  background-color: #fafafa;
+  text-align: center;
+}
+
+.review-box {
+  position: relative;
+  max-width: 700px;
+  margin: auto;
+  padding: 30px 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.review-text {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.review-name {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.reviews-slider .slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.7);
+  border: none;
+  font-size: 24px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.reviews-slider .slider-arrow.left {
+  left: -20px;
+}
+
+.reviews-slider .slider-arrow.right {
+  right: -20px;
+}
+
+/* Footer */
+
+.footer {
+  background-color: #222;
+  color: #ccc;
+  padding: 40px 20px 20px;
+  font-size: 14px;
+}
+
+.footer-columns {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1000px;
+  margin: auto;
+  gap: 40px;
+}
+
+.footer-col h4 {
+  color: #fff;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.footer-col ul li {
+  margin-bottom: 8px;
+}
+
+.footer-col ul a {
+  color: #ccc;
+  transition: color 0.3s;
+}
+
+.footer-col ul a:hover {
+  color: white;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 30px;
+  color: #888;
+}

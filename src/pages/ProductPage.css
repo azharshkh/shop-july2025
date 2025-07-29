@@ -1,0 +1,17 @@
+.product-page {
+  padding: 40px 20px;
+  background-color: #fff;
+  min-height: 100vh;
+  text-align: center;
+}
+
+.product-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.product-wrapper {
+  max-width: 300px;
+  margin: auto;
+}
