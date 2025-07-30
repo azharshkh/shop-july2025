@@ -1,0 +1,55 @@
+.bestseller-section {
+  padding: 2rem;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.bestseller-slider {
+  position: relative;
+  overflow: hidden;
+}
+
+.bestseller-track {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+  gap: 1rem;
+}
+
+.bestseller-card {
+  min-width: 30%;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  background: #fff;
+  text-align: center;
+}
+
+.bestseller-card img {
+  width: 100%;
+  height: auto;
+}
+
+.slider-arrow {
+  position: absolute;
+  top: 40%;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.slider-arrow.left {
+  left: 0;
+}
+
+.slider-arrow.right {
+  right: 0;
+}
+
+.add-to-cart-btn {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+}

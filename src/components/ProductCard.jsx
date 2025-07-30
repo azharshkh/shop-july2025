@@ -1,22 +1,46 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './ProductCard.css';
+// src/pages/ProductPage.jsx
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase';
+import "../pages/CategoryPage.css";
 
-function ProductCard({ id, image, name, price }) {
-  console.log("Rendering ProductCard with id:", id);
+function ProductPage() {
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const ref = doc(db, 'products', id);
+      const snapshot = await getDoc(ref);
+      if (snapshot.exists()) {
+        setProduct({ id: snapshot.id, ...snapshot.data() });
+      } else {
+        setProduct(null);
+      }
+    };
+    fetchProduct();
+  }, [id]);
+
+  if (!product) {
+    return <p style={{ padding: "50px" }}>Product not found.</p>;
+  }
 
   return (
-    <Link to={`/product/${id}`} className="product-card-link">
-      <div className="product-card">
-        <img src={image} alt={name} className="product-card-image" />
-        <div className="product-card-info">
-          <h3 className="product-card-name">{name}</h3>
-          <p className="product-card-price">{price}</p>
-          <button className="product-card-button">Add to Cart</button>
+    <div className="category-page">
+      <h2 className="category-title">{product.name}</h2>
+      <div className="category-grid" style={{ justifyContent: "center" }}>
+        <div className="product-card">
+          <img src={product.imageUrl} alt={product.name} className="product-card-image" />
+          <div className="product-card-info">
+            <h3 className="product-card-name">{product.name}</h3>
+            <p className="product-card-price">₹{product.price}</p>
+            <button className="product-card-button">Add to Cart</button>
+          </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 
-export default ProductCard;
+export default ProductPage;

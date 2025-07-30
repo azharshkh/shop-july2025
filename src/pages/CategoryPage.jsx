@@ -1,69 +1,52 @@
-import React from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import ProductCard from '../components/ProductCard';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
 import './CategoryPage.css';
 
-const products = [
-  {
-    id: 1,
-    name: "Gold Ring",
-    image: "/ring1.jpg",
-    price: "₹4,999",
-  },
-  {
-    id: 2,
-    name: "Silver Bracelet",
-    image: "/bracelet1.jpg",
-    price: "₹2,499",
-  },
-  {
-    id: 3,
-    name: "Pearl Necklace",
-    image: "/necklace1.jpg",
-    price: "₹7,999",
-  },
-  {
-    id: 4,
-    name: "Diamond Earrings",
-    image: "/earring1.jpg",
-    price: "₹10,499",
-  },
-  {
-    id: 5,
-    name: "Platinum Chain",
-    image: "/chain1.jpg",
-    price: "₹12,299",
-  },
-  {
-    id: 6,
-    name: "Gemstone Pendant",
-    image: "/pendant1.jpg",
-    price: "₹3,499",
-  },
-];
-
 function CategoryPage() {
-  return (
-    <>
-      <Header />
-      <div className="category-page">
-        <h2 className="category-title">Browse Collection</h2>
-        <div className="category-grid">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              id={product.id} // ✅ important for routing
-              image={product.image}
-              name={product.name}
-              price={product.price}
-            />
+  const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
-          ))}
-        </div>
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const snapshot = await getDocs(collection(db, 'categories'));
+      const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setCategories(list);
+    };
+    fetchCategories();
+  }, []);
+
+  return (
+    <div className="category-page">
+      <h2 className="category-title">Browse Categories</h2>
+      <div className="category-grid">
+        {categories.map(cat => (
+          <div
+            key={cat.id}
+            className="category-card"
+            onClick={() => navigate(`/category/${cat.name}`)}
+            style={{
+              cursor: 'pointer',
+              border: '1px solid #ccc',
+              padding: '1rem',
+              textAlign: 'center',
+              borderRadius: '8px',
+              background: '#f9f9f9'
+            }}
+          >
+            <img
+              src={cat.imageUrl}
+              alt={cat.name}
+              width="150"
+              height="150"
+              style={{ objectFit: 'cover', borderRadius: '6px' }}
+            />
+            <h4 style={{ marginTop: '0.5rem' }}>{cat.name.toUpperCase()}</h4>
+          </div>
+        ))}
       </div>
-      <Footer />
-    </>
+    </div>
   );
 }
 
