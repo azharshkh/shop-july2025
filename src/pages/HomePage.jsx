@@ -7,6 +7,9 @@ import PromoBanner from '../components/PromoBanner';
 import ReviewsSlider from '../components/ReviewsSlider';
 import Footer from '../components/Footer';
 
+import ProductGrid from '../components/ProductGrid';
+
+
 function HomePage() {
   return (
     <div>
@@ -15,6 +18,10 @@ function HomePage() {
       <BestSellersSlider />
       <PromoBanner />
       <ReviewsSlider />
+
+      <ProductGrid />
+
+
     </div>
   );
 }

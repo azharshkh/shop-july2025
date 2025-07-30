@@ -9,6 +9,11 @@ import HomePage from './pages/HomePage';
 import CategoryPage from './pages/CategoryPage';
 import ProductPage from './pages/ProductPage';
 
+import LoginPage from './pages/LoginPage';
+
+import AdminUploadPage from './pages/AdminUploadPage';
+
+
 function App() {
   const [showNav, setShowNav] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -42,7 +47,11 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/category" element={<CategoryPage />} />
           <Route path="/product/:id" element={<ProductPage />} />
+          <Route path="/login" element={<LoginPage />} />  {/* <- Add here */}
+       <Route path="/admin/upload" element={<AdminUploadPage />} />
+
         </Routes>
+
         <Footer />
       </div>
     </>
