@@ -18,3 +18,28 @@
   max-width: 1200px;
   margin: auto;
 }
+
+
+
+.sticky-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+  background-color: white; /* or match your site theme */
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sticky-header.hidden {
+  transform: translateY(-100%);
+}
+
+.sticky-header.visible {
+  transform: translateY(0);
+}
+
+/* Push down content to not hide behind fixed header */
+.page-content {
+  padding-top: 120px; /* Adjust if your Header + TopNav height differs */
+}

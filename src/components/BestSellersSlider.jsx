@@ -35,10 +35,13 @@ function BestSellersSlider() {
           style={{ transform: `translateX(-${index * (100 / visibleCount)}%)` }}
         >
           {bestSellers.map((item) => (
-            <Link to={`/product/${item.id}`} className="bestseller-card" key={item.id}>
-              <img src={item.image} alt={item.name} />
-              <div className="bestseller-name">{item.name}</div>
-            </Link>
+            <div className="bestseller-card" key={item.id}>
+              <Link to={`/product/${item.id}`}>
+                <img src={item.image} alt={item.name} />
+                <div className="bestseller-name">{item.name}</div>
+              </Link>
+              <button className="add-to-cart-btn">Add to Cart</button>
+            </div>
           ))}
         </div>
 

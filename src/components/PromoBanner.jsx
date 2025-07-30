@@ -5,7 +5,10 @@ function PromoBanner() {
     <section className="promo-banner">
       <img src="/promo-banner.jpg" alt="Promo" className="promo-image" />
 
-      <button className="promo-button">Shop Now</button>
+      <div className="promo-overlay">
+        <p className="promo-text">xyz epsom dolor sit amet, consectetur adipiscing elit. Exclusive offers for limited time.</p>
+        <button className="promo-button">Shop Now</button>
+      </div>
     </section>
   );
 }

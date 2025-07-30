@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import Header from './components/Header';
@@ -10,16 +10,41 @@ import CategoryPage from './pages/CategoryPage';
 import ProductPage from './pages/ProductPage';
 
 function App() {
+  const [showNav, setShowNav] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+
+      if (currentY > lastScrollY && currentY > 100) {
+        setShowNav(false); // scrolling down
+      } else {
+        setShowNav(true); // scrolling up
+      }
+
+      setLastScrollY(currentY);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
   return (
     <>
-      <Header />
-      <TopNav />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/category" element={<CategoryPage />} />
-        <Route path="/product/:id" element={<ProductPage />} />
-      </Routes>
-      <Footer />
+      <div className={`sticky-header ${showNav ? 'visible' : 'hidden'}`}>
+        <Header />
+        <TopNav />
+      </div>
+
+      <div className="page-content">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/category" element={<CategoryPage />} />
+          <Route path="/product/:id" element={<ProductPage />} />
+        </Routes>
+        <Footer />
+      </div>
     </>
   );
 }
