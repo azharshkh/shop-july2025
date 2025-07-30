@@ -17,6 +17,7 @@ import AdminUploadPage from './pages/AdminUploadPage';
 
 import CategoryItemsPage from './pages/CategoryItemsPage';
 
+import CartPage from './pages/CartPage';
 
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/login" element={<LoginPage />} />  {/* <- Add here */}
           <Route path="/admin/upload" element={<AdminUploadPage />} />
+<Route path="/cart" element={<CartPage />} />
 
         </Routes>
 

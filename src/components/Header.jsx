@@ -1,11 +1,26 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function Header() {
   const [showLogin, setShowLogin] = useState(false);
   const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
+  const [cartCount, setCartCount] = useState(0);
+
+useEffect(() => {
+  const updateCartCount = () => {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const count = cart.reduce((acc, item) => acc + item.quantity, 0);
+    setCartCount(count);
+  };
+
+  updateCartCount();
+  window.addEventListener('storage', updateCartCount);
+  return () => window.removeEventListener('storage', updateCartCount);
+}, []);
+
 
   const handleLogin = () => {
     if (loginId === '0000' && password === '0000') {
@@ -48,7 +63,7 @@ function Header() {
 
         <Link to="/cart" className="icon-button cart-button" title="Cart">
           <img src="/cart-icon.png" alt="Cart" />
-          <span className="cart-count">0</span>
+<span className="cart-count">{cartCount}</span>
         </Link>
       </div>
 

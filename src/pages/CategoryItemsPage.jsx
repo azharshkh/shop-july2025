@@ -30,7 +30,7 @@ function CategoryItemsPage() {
             <ProductCard
               key={product.id}
               id={product.id}
-              image={product.imageUrl}
+              image={product.imageUrl || "https://via.placeholder.com/150x150.png?text=Product"}
               name={product.name}
               price={`₹${product.price}`}
             />
