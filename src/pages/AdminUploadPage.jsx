@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'; // useRef added
+import React, { useEffect, useRef, useState } from 'react';
 import { db } from '../firebase';
 import {
   collection,
@@ -10,6 +10,7 @@ import {
   doc,
   updateDoc,
 } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
 const placeholderImg = "https://via.placeholder.com/150x150.png?text=Product";
 
@@ -19,8 +20,14 @@ function AdminUploadPage() {
   const [productsByCategory, setProductsByCategory] = useState({});
   const [newProducts, setNewProducts] = useState({});
   const [loading, setLoading] = useState(false);
+  const debounceTimers = useRef({});
+  const navigate = useNavigate();
 
-  const debounceTimers = useRef({}); // ✅ Track timers per product ID
+  // ✅ Block if not logged in as admin
+  useEffect(() => {
+    const admin = localStorage.getItem('adminUser');
+    if (!admin) navigate('/');
+  }, [navigate]);
 
   useEffect(() => {
     fetchCategories();
@@ -82,7 +89,6 @@ function AdminUploadPage() {
     fetchProducts(category);
   };
 
-  // ✅ Debounced toggle for best seller
   const handleBestSellerChange = (prodId, currentValue, category) => {
     if (debounceTimers.current[prodId]) {
       clearTimeout(debounceTimers.current[prodId]);
@@ -92,7 +98,7 @@ function AdminUploadPage() {
       const ref = doc(db, 'products', prodId);
       await updateDoc(ref, { bestSeller: !currentValue });
       fetchProducts(category);
-    }, 400); // Adjust debounce delay if needed
+    }, 400);
   };
 
   return (

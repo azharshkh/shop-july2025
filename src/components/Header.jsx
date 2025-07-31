@@ -1,94 +1,132 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { signInWithPopup, signOut } from 'firebase/auth';
+import { auth, provider, db } from '../firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 function Header() {
-  const [showLogin, setShowLogin] = useState(false);
-  const [loginId, setLoginId] = useState('');
-  const [password, setPassword] = useState('');
+  const [cartCount, setCartCount] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [admin, setAdmin] = useState(null);
   const navigate = useNavigate();
 
-  const [cartCount, setCartCount] = useState(0);
+  useEffect(() => {
+    const updateCartCount = () => {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const count = cart.reduce((acc, item) => acc + item.quantity, 0);
+      setCartCount(count);
+    };
+    updateCartCount();
+    window.addEventListener('storage', updateCartCount);
+    return () => window.removeEventListener('storage', updateCartCount);
+  }, []);
 
-useEffect(() => {
-  const updateCartCount = () => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const count = cart.reduce((acc, item) => acc + item.quantity, 0);
-    setCartCount(count);
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem('adminUser'));
+    if (stored) setAdmin(stored);
+  }, []);
+
+  const handleSearch = (e) => {
+    if (e.key === 'Enter' && searchQuery.trim()) {
+      navigate(`/category/${searchQuery.trim().toLowerCase()}`);
+      setSearchQuery('');
+    }
   };
 
-  updateCartCount();
-  window.addEventListener('storage', updateCartCount);
-  return () => window.removeEventListener('storage', updateCartCount);
-}, []);
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      console.log('USER UID:', user.uid);
 
 
-  const handleLogin = () => {
-    if (loginId === '0000' && password === '0000') {
-      setShowLogin(false);
-      setLoginId('');
-      setPassword('');
+      // Check Firestore for admin UID
+      const docRef = doc(db, 'admins', user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        alert('Access denied: Not an admin');
+        await signOut(auth);
+        return;
+      }
+
+      // Store user info in localStorage
+      localStorage.setItem('adminUser', JSON.stringify({
+        email: user.email,
+        name: user.displayName,
+        uid: user.uid
+      }));
+
+      setAdmin(user);
       navigate('/admin/upload');
-    } else {
-      alert('Invalid credentials');
+    } catch (err) {
+      console.error(err);
+      alert('Login failed');
     }
+  };
+
+  const handleLogout = () => {
+    signOut(auth).then(() => {
+      localStorage.removeItem('adminUser');
+      setAdmin(null);
+    });
   };
 
   return (
     <header className="header">
-      {/* Left: Logo */}
       <div className="header-left">
         <Link to="/" className="logo">
           <h1>Thauya</h1>
         </Link>
       </div>
 
-      {/* Center: Search bar */}
       <div className="header-center">
         <input
           type="text"
           className="search-input"
           placeholder="Search products..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={handleSearch}
         />
       </div>
 
-      {/* Right: Login and Cart */}
       <div className="header-right">
-        <button
-          className="icon-button"
-          title="Login"
-          onClick={() => setShowLogin(true)}
-        >
-          <img src="/login-icon.png" alt="Login" />
-        </button>
+        {admin ? (
+          <>
+            <button
+              className="icon-button"
+              onClick={() => navigate('/admin/upload')}
+              title="Admin Panel"
+            >
+              <img src="/admin-icon.png" alt="Admin" />
+            </button>
+
+            <button
+              className="icon-button"
+              onClick={handleLogout}
+              title="Logout"
+            >
+              <img src="/logout-icon.png" alt="Logout" />
+            </button>
+          </>
+        ) : (
+          <button
+            className="icon-button"
+            onClick={handleGoogleLogin}
+            title="Admin Login"
+          >
+            <img src="/login-icon.png" alt="Login" />
+          </button>
+        )}
 
         <Link to="/cart" className="icon-button cart-button" title="Cart">
           <img src="/cart-icon.png" alt="Cart" />
-<span className="cart-count">{cartCount}</span>
+          <span className="cart-count">{cartCount}</span>
         </Link>
       </div>
 
-      {/* Login Popup */}
-      {showLogin && (
-        <div className="login-popup">
-          <div className="login-box">
-            <h3>Admin Login</h3>
-            <input
-              type="text"
-              placeholder="Login ID"
-              value={loginId}
-              onChange={(e) => setLoginId(e.target.value)}
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button onClick={handleLogin}>Enter</button>
-            <button onClick={() => setShowLogin(false)}>Cancel</button>
-          </div>
-        </div>
-      )}
     </header>
   );
 }

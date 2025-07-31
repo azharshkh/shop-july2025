@@ -1,10 +1,9 @@
-// src/pages/CategoryItemsPage.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { db } from '../firebase';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import ProductCard from '../components/ProductCard';
-import './CategoryPage.css'; // reuse styles
+import './CategoryPage.css';
 
 function CategoryItemsPage() {
   const { categoryName } = useParams();
@@ -12,10 +11,15 @@ function CategoryItemsPage() {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const q = query(collection(db, 'products'), where('category', '==', categoryName));
-      const snapshot = await getDocs(q);
-      const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setProducts(items);
+      const allSnap = await getDocs(collection(db, 'products'));
+      const allProducts = allSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+      const final = allProducts.filter(p =>
+        p.name?.toLowerCase().includes(categoryName.toLowerCase()) ||
+        p.category?.toLowerCase().includes(categoryName.toLowerCase())
+      );
+
+      setProducts(final);
     };
 
     fetchProducts();
@@ -36,7 +40,7 @@ function CategoryItemsPage() {
             />
           ))
         ) : (
-          <p>No products found in this category.</p>
+          <p>No matching products found.</p>
         )}
       </div>
     </div>
